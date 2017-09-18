@@ -1,5 +1,5 @@
 <?php 
-  // 根据URL放回相应的页面
+  // 根据URL中的路径返回相应的页面
   // 后端路由
   header('content-type:text/html; charset=utf8;');
 

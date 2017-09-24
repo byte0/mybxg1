@@ -14,6 +14,9 @@ define(['jquery'],function($){
         });
       }
       return tcId;
+    },
+    setMenu : function(path){
+      $('.aside .navs a[href="'+path+'"]').addClass('active');
     }
   }
 });

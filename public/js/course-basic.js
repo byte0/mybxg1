@@ -1,4 +1,4 @@
-define(['jquery','template','util'],function($,template,util){
+define(['jquery','template','util','validate','form'],function($,template,util){
   // 设置导航菜单选中
   util.setMenu('/course/add');
   // 获取课程ID
@@ -36,7 +36,23 @@ define(['jquery','template','util'],function($,template,util){
             $('#secondType').html(html);
           }
         });
-
+      });
+      // 处理表单提交
+      $('#basicForm').validate({
+        sendForm : false,
+        valid : function(){
+          // 提交表单
+          $(this).ajaxSubmit({
+            type : 'post',
+            url : '/api/course/update/basic',
+            data : {cs_id : csId},
+            dataType : 'json',
+            success : function(data){
+              // 下一步跳转到封面裁切页面
+              location.href = '/course/picture?cs_id=' + data.result.cs_id;
+            }
+          });
+        }
       });
     }
   });

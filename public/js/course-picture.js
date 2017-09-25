@@ -13,6 +13,11 @@ define(['jquery','template','util','uploadify','jcrop','form'],function($,templa
       // 解析数据，渲染页面
       var html = template('pictureTpl',data.result);
       $('#pictureInfo').html(html);
+
+      // 选中图片
+      var img = $('.preview img');
+      var nowCrop = null;// 保证裁切实例的唯一性
+
       // 处理封面上传操作
       $('#myfile').uploadify({
         width : 80,
@@ -27,11 +32,10 @@ define(['jquery','template','util','uploadify','jcrop','form'],function($,templa
         onUploadSuccess : function(a,b){
           var obj = JSON.parse(b);
           $('.preview img').attr('src',obj.result.path);
+          cropImage();
+          $('#cropBtn').text('保存图片').attr('data-flag',true);
         }
       });
-
-      // 选中图片
-      var img = $('.preview img');
 
       // 图片裁切功能
       $('#cropBtn').click(function(){
@@ -62,6 +66,9 @@ define(['jquery','template','util','uploadify','jcrop','form'],function($,templa
         img.Jcrop({
           aspectRatio : 2
         },function(){
+          // 销毁当前实例
+          nowCrop && nowCrop.destroy();
+          nowCrop = this;
           // 显示缩略图
           this.initComponent('Thumbnailer',{width : 240,height : 120,mythumb:'.thumb'});
 
@@ -90,11 +97,6 @@ define(['jquery','template','util','uploadify','jcrop','form'],function($,templa
         });
       }
 
-
-
-
-
-      
     }
   });
 
